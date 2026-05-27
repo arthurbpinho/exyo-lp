@@ -1,12 +1,18 @@
-import { useState } from 'react'
-import { useT } from '../i18n/LanguageContext'
+import { useMemo, useState } from 'react'
+import { useLanguage, useT } from '../i18n/LanguageContext'
+import { countries } from '../data/countries'
 
 export default function FormSection() {
   const t = useT()
+  const { lang } = useLanguage()
+  const sortedCountries = useMemo(
+    () => [...countries].sort((a, b) => a[lang].localeCompare(b[lang], lang)),
+    [lang]
+  )
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
-    ddi: '',
+    ddi: 'BR',
     telefone: '',
     data: '',
     horario: '',
@@ -21,9 +27,8 @@ export default function FormSection() {
     e.preventDefault()
     setStatus('sending')
 
-    const ddi = formData.ddi.trim().startsWith('+')
-      ? formData.ddi.trim()
-      : `+${formData.ddi.trim()}`
+    const country = countries.find(c => c.iso === formData.ddi)
+    const ddi = country ? country.dial : ''
     const telefoneCompleto = `${ddi} ${formData.telefone.trim()}`.trim()
 
     const payload = {
@@ -47,7 +52,7 @@ export default function FormSection() {
 
       if (res.ok) {
         setStatus('sent')
-        setFormData({ nome: '', email: '', ddi: '', telefone: '', data: '', horario: '' })
+        setFormData({ nome: '', email: '', ddi: 'BR', telefone: '', data: '', horario: '' })
       } else {
         setStatus('error')
       }
@@ -103,22 +108,24 @@ export default function FormSection() {
             <input type="text" style={{ display: 'none' }} name="_honey" tabIndex={-1} autoComplete="off" />
             <input type="text" name="nome" placeholder={t('form.name')} required value={formData.nome} onChange={handleChange} className="form-input" />
             <input type="email" name="email" placeholder={t('form.email')} required value={formData.email} onChange={handleChange} className="form-input" />
-            <div className="grid grid-cols-[6rem_1fr] gap-3.5">
+            <div className="grid grid-cols-[10rem_1fr] gap-3.5">
               <div className="flex flex-col">
-                <input
-                  type="text"
+                <select
                   name="ddi"
-                  placeholder={t('form.phone_ddi_placeholder')}
                   required
                   value={formData.ddi}
                   onChange={handleChange}
-                  pattern="^\+?\d{1,4}$"
                   title={t('form.phone_ddi_hint')}
-                  inputMode="tel"
                   autoComplete="tel-country-code"
-                  className="form-input text-center"
-                />
-                <span className="text-exyo-gray text-[0.7rem] mt-1 text-center">
+                  className="form-input"
+                >
+                  {sortedCountries.map(c => (
+                    <option key={c.iso} value={c.iso}>
+                      {c.flag} {c.dial} {c[lang]}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-exyo-gray text-[0.7rem] mt-1 text-left">
                   {t('form.phone_ddi_label')}
                 </span>
               </div>
