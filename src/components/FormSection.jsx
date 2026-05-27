@@ -97,7 +97,17 @@ export default function FormSection() {
             <input type="text" style={{ display: 'none' }} name="_honey" tabIndex={-1} autoComplete="off" />
             <input type="text" name="nome" placeholder={t('form.name')} required value={formData.nome} onChange={handleChange} className="form-input" />
             <input type="email" name="email" placeholder={t('form.email')} required value={formData.email} onChange={handleChange} className="form-input" />
-            <input type="tel" name="telefone" placeholder={t('form.phone')} value={formData.telefone} onChange={handleChange} className="form-input" />
+            <input
+              type="tel"
+              name="telefone"
+              placeholder={t('form.phone')}
+              required
+              value={formData.telefone}
+              onChange={handleChange}
+              pattern="^\+\d[\d\s\-()]{5,}$"
+              title={t('form.phone_hint')}
+              className="form-input"
+            />
             <div className="grid grid-cols-2 gap-3.5">
               <input type="date" name="data" value={formData.data} onChange={handleChange} className="form-input" />
               <input type="time" name="horario" value={formData.horario} onChange={handleChange} className="form-input" />
@@ -108,6 +118,9 @@ export default function FormSection() {
             {status === 'error' && (
               <p className="text-red-400 text-sm mt-1">{t('form.error')}</p>
             )}
+            <p className="text-exyo-gray text-xs mt-2 text-left">
+              {t('form.timezone_note')}
+            </p>
           </form>
         )}
       </div>
