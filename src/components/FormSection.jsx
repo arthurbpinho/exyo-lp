@@ -104,31 +104,41 @@ export default function FormSection() {
             <input type="text" name="nome" placeholder={t('form.name')} required value={formData.nome} onChange={handleChange} className="form-input" />
             <input type="email" name="email" placeholder={t('form.email')} required value={formData.email} onChange={handleChange} className="form-input" />
             <div className="grid grid-cols-[6rem_1fr] gap-3.5">
-              <input
-                type="text"
-                name="ddi"
-                placeholder={t('form.phone_ddi_placeholder')}
-                required
-                value={formData.ddi}
-                onChange={handleChange}
-                pattern="^\+?\d{1,4}$"
-                title={t('form.phone_ddi_hint')}
-                inputMode="tel"
-                autoComplete="tel-country-code"
-                className="form-input text-center"
-              />
-              <input
-                type="tel"
-                name="telefone"
-                placeholder={t('form.phone_placeholder')}
-                required
-                value={formData.telefone}
-                onChange={handleChange}
-                pattern="^[\d\s\-()]{6,}$"
-                title={t('form.phone_hint')}
-                autoComplete="tel-national"
-                className="form-input"
-              />
+              <div className="flex flex-col">
+                <input
+                  type="text"
+                  name="ddi"
+                  placeholder={t('form.phone_ddi_placeholder')}
+                  required
+                  value={formData.ddi}
+                  onChange={handleChange}
+                  pattern="^\+?\d{1,4}$"
+                  title={t('form.phone_ddi_hint')}
+                  inputMode="tel"
+                  autoComplete="tel-country-code"
+                  className="form-input text-center"
+                />
+                <span className="text-exyo-gray text-[0.7rem] mt-1 text-center">
+                  {t('form.phone_ddi_label')}
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <input
+                  type="tel"
+                  name="telefone"
+                  placeholder={t('form.phone_placeholder')}
+                  required
+                  value={formData.telefone}
+                  onChange={handleChange}
+                  pattern="^[\d\s\-()]{6,}$"
+                  title={t('form.phone_hint')}
+                  autoComplete="tel-national"
+                  className="form-input"
+                />
+                <span className="text-exyo-gray text-[0.7rem] mt-1 text-left">
+                  {t('form.phone_label')}
+                </span>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-3.5">
               <input type="date" name="data" value={formData.data} onChange={handleChange} className="form-input" />
