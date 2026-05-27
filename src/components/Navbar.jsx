@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import logoExyo from '../assets/images/logo-exyo.png'
+import LanguageSwitcher from './LanguageSwitcher'
+import { useT } from '../i18n/LanguageContext'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const t = useT()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -32,42 +34,14 @@ export default function Navbar() {
           />
         </a>
 
-        {/* Desktop CTA */}
-        <a
-          href="#form-section"
-          className="cta-btn hidden md:inline-flex"
-          style={{ padding: '11px 28px', fontSize: '0.85rem' }}
-        >
-          Agendar Reunião
-        </a>
-
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden flex flex-col gap-1.5 p-2"
-          aria-label="Menu"
-        >
-          <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          menuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
-        }`}
-        style={{ background: 'rgba(10,10,10,0.98)' }}
-      >
-        <div className="px-5 py-6 border-t border-[rgba(112,206,211,0.08)]">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <LanguageSwitcher />
           <a
             href="#form-section"
-            onClick={() => setMenuOpen(false)}
-            className="cta-btn block text-center w-full"
-            style={{ padding: '14px 26px', fontSize: '0.9rem' }}
+            className="cta-btn hidden md:inline-flex"
+            style={{ padding: '11px 28px', fontSize: '0.85rem' }}
           >
-            Agendar Reunião
+            {t('nav.cta')}
           </a>
         </div>
       </div>

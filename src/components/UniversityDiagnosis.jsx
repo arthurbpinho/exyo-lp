@@ -1,12 +1,9 @@
-const solutions = [
-  { label: 'Estágios supervisionados', desc: 'Oportunidades limitadas de prática' },
-  { label: 'Laboratórios', desc: 'Simulam cenários, mas não pessoas' },
-  { label: 'Parcerias externas', desc: 'Não oferecem treinos estruturados' },
-  { label: 'Palestras', desc: 'Muito conteúdo, pouca aplicação' },
-  { label: 'Feiras', desc: 'Expõem soluções, mas não treinam habilidades' },
-]
+import { useT } from '../i18n/LanguageContext'
 
 export default function UniversityDiagnosis() {
+  const t = useT()
+  const solutions = t('diagnosis.solutions')
+
   return (
     <section className="relative z-[1] text-center py-24 sm:py-28 lg:py-32 px-6 lg:px-10" style={{ background: 'var(--bg2)' }}>
       <div className="max-w-6xl mx-auto">
@@ -14,7 +11,7 @@ export default function UniversityDiagnosis() {
           className="font-heading font-semibold text-exyo-cyan mb-5 uppercase tracking-[0.2em] reveal d1"
           style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', lineHeight: 1.2 }}
         >
-          E o que as universidades fazem para tratar isso?
+          {t('diagnosis.title')}
         </h2>
 
         {/* Solution table */}
@@ -47,7 +44,7 @@ export default function UniversityDiagnosis() {
           style={{ borderLeft: '3px solid var(--cyan)', background: 'linear-gradient(90deg, rgba(112,206,211,0.035), transparent)' }}
         >
           <p className="text-exyo-gray text-sm sm:text-base leading-relaxed">
-            No fim, são soluções <strong className="text-exyo-white">desatualizadas, insuficientes e desconectadas</strong> do processo de formação do profissional da saúde. Sem uma metodologia e integração necessárias, a <span className="text-exyo-cyan">lacuna permanece</span>.
+            {t('diagnosis.quote_part1')} <strong className="text-exyo-white">{t('diagnosis.quote_strong')}</strong> {t('diagnosis.quote_part2')} <span className="text-exyo-cyan">{t('diagnosis.quote_highlight')}</span>{t('diagnosis.quote_end')}
           </p>
         </div>
       </div>

@@ -1,10 +1,9 @@
-const stats = [
-  { num: '85%', desc: 'dos estudantes preferem simulações práticas' },
-  { num: '92%', desc: 'melhor retenção com IA personalizada' },
-  { num: '78%', desc: 'das instituições buscam integração digital' },
-]
+import { useT } from '../i18n/LanguageContext'
 
 export default function Efficacy() {
+  const t = useT()
+  const stats = t('efficacy.stats')
+
   return (
     <section className="relative z-[1] text-center py-24 sm:py-28 lg:py-32 px-6 lg:px-10">
       <div className="max-w-6xl mx-auto">
@@ -12,7 +11,7 @@ export default function Efficacy() {
           className="font-heading font-semibold text-exyo-cyan mb-5 uppercase tracking-[0.2em] reveal d1"
           style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', lineHeight: 1.2 }}
         >
-          Prova de Eficácia
+          {t('efficacy.title')}
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10 max-w-4xl mx-auto">

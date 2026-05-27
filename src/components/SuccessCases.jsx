@@ -1,8 +1,10 @@
 import logoAllos from '../assets/images/logo-allos.png'
 import logoLucasAlbertoni from '../assets/images/logo-lucas-albertoni.avif'
 import logoExyoFeliz from '../assets/images/logo-exyo-feliz.png'
+import { useT } from '../i18n/LanguageContext'
 
 export default function SuccessCases() {
+  const t = useT()
   return (
     <section className="relative z-[1] text-center py-24 sm:py-28 lg:py-32 px-6 lg:px-10">
       <div className="max-w-6xl mx-auto">
@@ -10,23 +12,23 @@ export default function SuccessCases() {
           className="font-heading font-semibold text-exyo-cyan mb-5 uppercase tracking-[0.2em] reveal d1"
           style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', lineHeight: 1.2 }}
         >
-          Exyo entre estudantes e profissionais
+          {t('cases.title')}
         </h2>
 
         <p className="text-exyo-gray max-w-[660px] mx-auto mb-10 text-base leading-relaxed reveal d2">
-          O <span className="text-exyo-cyan">Exyo</span> já foi implementado na formação da Associação Allos e da Comunidade Lucas Albertoni, com mecanismo de feedback entre alunos e supervisores clínicos e treino prático a partir da IA.
+          {t('cases.body_part1')} <span className="text-exyo-cyan">{t('cases.body_brand')}</span> {t('cases.body_part2')}
         </p>
 
         {/* Partner logos */}
         <div className="flex justify-center items-center gap-10 sm:gap-14 flex-wrap mb-10 reveal d2">
           <img
             src={logoAllos}
-            alt="Associação Allos"
+            alt={t('cases.logoAllosAlt')}
             className="h-16 sm:h-[66px] opacity-[0.85] hover:opacity-100 hover:scale-105 transition-all duration-300"
           />
           <img
             src={logoLucasAlbertoni}
-            alt="Lucas Albertoni"
+            alt={t('cases.logoLucasAlt')}
             className="h-16 sm:h-[66px] opacity-[0.85] hover:opacity-100 hover:scale-105 transition-all duration-300"
           />
         </div>
@@ -38,12 +40,11 @@ export default function SuccessCases() {
         >
           <img
             src={logoExyoFeliz}
-            alt="Exyo feliz"
+            alt={t('cases.logoMascotAlt')}
             className="w-10 sm:w-[42px]"
           />
           <p className="text-exyo-white font-display font-medium text-sm sm:text-[0.92rem] text-left">
-            A <span className="text-exyo-cyan font-semibold">IA enquanto facilitadora</span> do treino de habilidades do profissional da saúde,
-            <br className="hidden sm:block" /> atuando como paciente simulado.
+            <span className="text-exyo-cyan font-semibold">{t('cases.method_lead')}</span> {t('cases.method_body')}
           </p>
         </div>
       </div>

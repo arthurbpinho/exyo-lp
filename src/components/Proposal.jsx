@@ -1,4 +1,7 @@
+import { useT } from '../i18n/LanguageContext'
+
 export default function Proposal() {
+  const t = useT()
   return (
     <section
       className="relative z-[1] text-center py-32 sm:py-36 px-6 lg:px-10"
@@ -15,14 +18,14 @@ export default function Proposal() {
           className="font-heading font-semibold text-exyo-cyan mb-5 uppercase tracking-[0.2em] reveal d1"
           style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', lineHeight: 1.2 }}
         >
-          O cruzamento dos eixos
+          {t('proposal.title')}
         </h2>
 
         <p
           className="font-display font-normal max-w-[760px] mx-auto leading-[1.65] reveal d2"
           style={{ fontSize: 'clamp(1.05rem, 2.5vw, 1.4rem)', color: 'rgba(245,245,247,0.82)' }}
         >
-          Nos propomos a ser <span className="text-exyo-cyan font-semibold">o cruzamento dos eixos</span> humano e digital, prática e teoria, ação e reflexão. É onde tudo se encontra, <span className="text-exyo-cyan font-semibold">reverbera</span> e retorna <span className="text-exyo-cyan font-semibold">transformado</span>.
+          {t('proposal.body_part1')} <span className="text-exyo-cyan font-semibold">{t('proposal.body_highlight1')}</span> {t('proposal.body_part2')} <span className="text-exyo-cyan font-semibold">{t('proposal.body_highlight2')}</span> {t('proposal.body_part3')} <span className="text-exyo-cyan font-semibold">{t('proposal.body_highlight3')}</span>{t('proposal.body_end')}
         </p>
 
         {/* Cross axes SVG */}

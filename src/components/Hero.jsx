@@ -1,7 +1,9 @@
 import logoExyo from '../assets/images/logo-exyo.png'
 import exyoGif from '../assets/images/exyo.gif'
+import { useT } from '../i18n/LanguageContext'
 
 export default function Hero() {
+  const t = useT()
   return (
     <section
       id="hero"
@@ -23,7 +25,7 @@ export default function Hero() {
           />
           <img
             src={exyoGif}
-            alt="Exyo mascote animado"
+            alt={t('hero.gifAlt')}
             className="rounded-2xl"
             style={{ width: 'min(140px, 28vw)' }}
           />
@@ -35,10 +37,10 @@ export default function Hero() {
             className="font-display font-bold text-exyo-white"
             style={{ fontSize: 'clamp(1.9rem, 4.8vw, 3rem)', lineHeight: 1.15, letterSpacing: '-0.02em' }}
           >
-            Como o <span className="text-exyo-cyan">Exyo</span> pode ressignificar a experiência de ensino e superar o abismo entre teoria e prática.
+            {t('hero.title_part1')} <span className="text-exyo-cyan">{t('hero.title_brand')}</span> {t('hero.title_part2')}
           </h1>
           <p className="text-exyo-gray text-sm mt-3 font-light tracking-wide">
-            Web Summit 2026 &mdash; Pré-lançamento oficial
+            {t('hero.subtitle')}
           </p>
         </div>
 
@@ -51,7 +53,7 @@ export default function Hero() {
               <line x1="8" y1="2" x2="8" y2="6" />
               <line x1="3" y1="10" x2="21" y2="10" />
             </svg>
-            Agendar Reunião
+            {t('hero.cta')}
           </a>
         </div>
       </div>

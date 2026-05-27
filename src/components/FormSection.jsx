@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useT } from '../i18n/LanguageContext'
 
 export default function FormSection() {
+  const t = useT()
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -18,15 +20,23 @@ export default function FormSection() {
     e.preventDefault()
     setStatus('sending')
 
+    const payload = {
+      Nome: formData.nome,
+      'E-mail': formData.email,
+      Telefone: formData.telefone || '—',
+      'Data preferida': formData.data || '—',
+      'Horário preferido': formData.horario || '—',
+      _subject: 'Reunião agendada com Equipe EXYO',
+      _replyto: formData.email,
+      _template: 'table',
+      _captcha: 'false',
+    }
+
     try {
-      const res = await fetch('https://formsubmit.co/ajax/arthurbpinho@hotmail.com', {
+      const res = await fetch('https://formsubmit.co/ajax/contato@exyo.com.br', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          ...formData,
-          _subject: 'Novo contato — Exyo Landing Page',
-          _captcha: 'false',
-        }),
+        body: JSON.stringify(payload),
       })
 
       if (res.ok) {
@@ -62,11 +72,11 @@ export default function FormSection() {
           className="font-display font-bold text-exyo-white mb-2 reveal"
           style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', lineHeight: 1.2 }}
         >
-          Agende uma Reunião do <span className="text-exyo-cyan">Exyo</span>
+          {t('form.title_part1')} <span className="text-exyo-cyan">{t('form.title_brand')}</span> {t('form.title_part2')}
         </h2>
 
         <p className="text-exyo-gray text-[0.9rem] mb-8 reveal d1">
-          Preencha o formulário e entraremos em contato
+          {t('form.subtitle')}
         </p>
 
         {status === 'sent' ? (
@@ -76,27 +86,27 @@ export default function FormSection() {
               <path d="M8 12l3 3 5-5" />
             </svg>
             <p className="font-display font-semibold text-exyo-white text-lg mb-2">
-              Obrigado pelo contato!
+              {t('form.thanks_title')}
             </p>
             <p className="text-exyo-gray text-sm">
-              Entraremos em contato em breve.
+              {t('form.thanks_body')}
             </p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 reveal d2">
             <input type="text" style={{ display: 'none' }} name="_honey" tabIndex={-1} autoComplete="off" />
-            <input type="text" name="nome" placeholder="Nome completo" required value={formData.nome} onChange={handleChange} className="form-input" />
-            <input type="email" name="email" placeholder="E-mail" required value={formData.email} onChange={handleChange} className="form-input" />
-            <input type="tel" name="telefone" placeholder="Telefone (WhatsApp)" value={formData.telefone} onChange={handleChange} className="form-input" />
+            <input type="text" name="nome" placeholder={t('form.name')} required value={formData.nome} onChange={handleChange} className="form-input" />
+            <input type="email" name="email" placeholder={t('form.email')} required value={formData.email} onChange={handleChange} className="form-input" />
+            <input type="tel" name="telefone" placeholder={t('form.phone')} value={formData.telefone} onChange={handleChange} className="form-input" />
             <div className="grid grid-cols-2 gap-3.5">
               <input type="date" name="data" value={formData.data} onChange={handleChange} className="form-input" />
               <input type="time" name="horario" value={formData.horario} onChange={handleChange} className="form-input" />
             </div>
             <button type="submit" disabled={status === 'sending'} className="cta-btn justify-center mt-1 w-full disabled:opacity-60">
-              {status === 'sending' ? 'Enviando...' : 'Agendar Reunião'}
+              {status === 'sending' ? t('form.sending') : t('form.submit')}
             </button>
             {status === 'error' && (
-              <p className="text-red-400 text-sm mt-1">Erro ao enviar. Tente novamente.</p>
+              <p className="text-red-400 text-sm mt-1">{t('form.error')}</p>
             )}
           </form>
         )}
