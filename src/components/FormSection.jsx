@@ -6,6 +6,7 @@ export default function FormSection() {
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
+    ddi: '',
     telefone: '',
     data: '',
     horario: '',
@@ -20,10 +21,15 @@ export default function FormSection() {
     e.preventDefault()
     setStatus('sending')
 
+    const ddi = formData.ddi.trim().startsWith('+')
+      ? formData.ddi.trim()
+      : `+${formData.ddi.trim()}`
+    const telefoneCompleto = `${ddi} ${formData.telefone.trim()}`.trim()
+
     const payload = {
       Nome: formData.nome,
       'E-mail': formData.email,
-      Telefone: formData.telefone || '—',
+      Telefone: telefoneCompleto,
       'Data preferida': formData.data || '—',
       'Horário preferido': formData.horario || '—',
       _subject: 'Reunião agendada com Equipe EXYO',
@@ -41,7 +47,7 @@ export default function FormSection() {
 
       if (res.ok) {
         setStatus('sent')
-        setFormData({ nome: '', email: '', telefone: '', data: '', horario: '' })
+        setFormData({ nome: '', email: '', ddi: '', telefone: '', data: '', horario: '' })
       } else {
         setStatus('error')
       }
@@ -97,17 +103,33 @@ export default function FormSection() {
             <input type="text" style={{ display: 'none' }} name="_honey" tabIndex={-1} autoComplete="off" />
             <input type="text" name="nome" placeholder={t('form.name')} required value={formData.nome} onChange={handleChange} className="form-input" />
             <input type="email" name="email" placeholder={t('form.email')} required value={formData.email} onChange={handleChange} className="form-input" />
-            <input
-              type="tel"
-              name="telefone"
-              placeholder={t('form.phone')}
-              required
-              value={formData.telefone}
-              onChange={handleChange}
-              pattern="^\+\d[\d\s\-()]{5,}$"
-              title={t('form.phone_hint')}
-              className="form-input"
-            />
+            <div className="grid grid-cols-[6rem_1fr] gap-3.5">
+              <input
+                type="text"
+                name="ddi"
+                placeholder={t('form.phone_ddi_placeholder')}
+                required
+                value={formData.ddi}
+                onChange={handleChange}
+                pattern="^\+?\d{1,4}$"
+                title={t('form.phone_ddi_hint')}
+                inputMode="tel"
+                autoComplete="tel-country-code"
+                className="form-input text-center"
+              />
+              <input
+                type="tel"
+                name="telefone"
+                placeholder={t('form.phone_placeholder')}
+                required
+                value={formData.telefone}
+                onChange={handleChange}
+                pattern="^[\d\s\-()]{6,}$"
+                title={t('form.phone_hint')}
+                autoComplete="tel-national"
+                className="form-input"
+              />
+            </div>
             <div className="grid grid-cols-2 gap-3.5">
               <input type="date" name="data" value={formData.data} onChange={handleChange} className="form-input" />
               <input type="time" name="horario" value={formData.horario} onChange={handleChange} className="form-input" />
