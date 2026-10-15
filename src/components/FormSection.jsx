@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { ArrowRight, CheckCircle, EnvelopeSimple, Globe } from '@phosphor-icons/react'
 import { useLanguage, useT } from '../i18n/LanguageContext'
 import { countries } from '../data/countries'
 
@@ -61,107 +62,126 @@ export default function FormSection() {
     }
   }
 
+  const optional = <span className="text-exyo-gray font-normal"> ({t('form.optional')})</span>
+
   return (
     <section
       id="form-section"
-      className="relative z-[1] py-20 sm:py-24 px-6 lg:px-10"
-      style={{ paddingBottom: 110, background: 'var(--bg2)' }}
+      className="relative z-[1] overflow-hidden py-24 sm:py-28 lg:py-36 px-5 sm:px-8 lg:px-10"
     >
-      <div className="max-w-[480px] mx-auto text-center">
-        {/* Calendar icon */}
-        <svg
-          width="34" height="34" fill="none" stroke="#70CED3" strokeWidth="1.5" viewBox="0 0 24 24"
-          className="mx-auto mb-4"
-        >
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <line x1="16" y1="2" x2="16" y2="6" />
-          <line x1="8" y1="2" x2="8" y2="6" />
-          <line x1="3" y1="10" x2="21" y2="10" />
-        </svg>
+      <div className="ambient w-[60vw] h-[60vw] -left-[20vw] top-0" aria-hidden="true" />
 
-        <h2
-          className="font-display font-bold text-exyo-white mb-2 reveal"
-          style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.2rem)', lineHeight: 1.2 }}
-        >
-          {t('form.title_part1')} <span className="text-exyo-cyan">{t('form.title_brand')}</span> {t('form.title_part2')}
-        </h2>
+      <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-12 lg:gap-20 items-start">
+        {/* Pitch column */}
+        <div className="lg:pt-6">
+          <h2 className="t-h2 reveal" style={{ fontSize: 'clamp(2rem, 4.6vw, 3.5rem)' }}>
+            {t('form.title_part1')} <span className="text-exyo-cyan">{t('form.title_brand')}</span>{t('form.title_part2') && ` ${t('form.title_part2')}`}
+          </h2>
+          <p className="t-lead mt-6 max-w-md reveal d1">{t('form.subtitle')}</p>
 
-        <p className="text-exyo-gray text-[0.9rem] mb-8 reveal d1">
-          {t('form.subtitle')}
-        </p>
-
-        {status === 'sent' ? (
-          <div className="reveal glass-card p-8 sm:p-10">
-            <svg width="48" height="48" fill="none" stroke="#70CED3" strokeWidth="2" viewBox="0 0 24 24" className="mx-auto mb-4">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 12l3 3 5-5" />
-            </svg>
-            <p className="font-display font-semibold text-exyo-white text-lg mb-2">
-              {t('form.thanks_title')}
-            </p>
-            <p className="text-exyo-gray text-sm">
-              {t('form.thanks_body')}
-            </p>
+          <div className="mt-12 pt-8 border-t border-[var(--line)] flex flex-col gap-5 max-w-md reveal d2">
+            <div className="flex items-center gap-4">
+              <EnvelopeSimple weight="light" className="w-6 h-6 text-exyo-cyan shrink-0" />
+              <p className="text-exyo-gray text-[0.95rem]">
+                {t('form.email_alt')}{' '}
+                <a href="mailto:contato@exyo.com.br" className="text-exyo-white hover:text-exyo-cyan underline decoration-[var(--line-strong)] underline-offset-4 transition-colors">
+                  contato@exyo.com.br
+                </a>
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Globe weight="light" className="w-6 h-6 text-exyo-cyan shrink-0" />
+              <p className="text-exyo-gray text-[0.95rem]">{t('form.timezone_note')}</p>
+            </div>
           </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 reveal d2">
-            <input type="text" style={{ display: 'none' }} name="_honey" tabIndex={-1} autoComplete="off" />
-            <input type="text" name="nome" placeholder={t('form.name')} required value={formData.nome} onChange={handleChange} className="form-input" />
-            <input type="email" name="email" placeholder={t('form.email')} required value={formData.email} onChange={handleChange} className="form-input" />
-            <div className="grid grid-cols-[10rem_1fr] gap-3.5">
-              <div className="flex flex-col">
-                <select
-                  name="ddi"
-                  required
-                  value={formData.ddi}
-                  onChange={handleChange}
-                  title={t('form.phone_ddi_hint')}
-                  autoComplete="tel-country-code"
-                  className="form-input"
-                >
-                  {sortedCountries.map(c => (
-                    <option key={c.iso} value={c.iso}>
-                      {c.flag} {c.dial} {c[lang]}
-                    </option>
-                  ))}
-                </select>
-                <span className="text-exyo-gray text-[0.7rem] mt-1 text-left">
-                  {t('form.phone_ddi_label')}
-                </span>
-              </div>
-              <div className="flex flex-col">
-                <input
-                  type="tel"
-                  name="telefone"
-                  placeholder={t('form.phone_placeholder')}
-                  required
-                  value={formData.telefone}
-                  onChange={handleChange}
-                  pattern="^[\d\s\-()]{6,}$"
-                  title={t('form.phone_hint')}
-                  autoComplete="tel-national"
-                  className="form-input"
-                />
-                <span className="text-exyo-gray text-[0.7rem] mt-1 text-left">
-                  {t('form.phone_label')}
-                </span>
-              </div>
+        </div>
+
+        {/* Form card */}
+        <div className="panel p-6 sm:p-10 reveal d1">
+          {status === 'sent' ? (
+            <div className="text-center py-10 sm:py-16" role="status">
+              <CheckCircle weight="light" className="w-14 h-14 text-exyo-cyan mx-auto mb-6" />
+              <p className="font-display font-semibold text-exyo-white text-xl tracking-tight mb-2">
+                {t('form.thanks_title')}
+              </p>
+              <p className="text-exyo-gray">
+                {t('form.thanks_body')}
+              </p>
             </div>
-            <div className="grid grid-cols-2 gap-3.5">
-              <input type="date" name="data" value={formData.data} onChange={handleChange} className="form-input" />
-              <input type="time" name="horario" value={formData.horario} onChange={handleChange} className="form-input" />
-            </div>
-            <button type="submit" disabled={status === 'sending'} className="cta-btn justify-center mt-1 w-full disabled:opacity-60">
-              {status === 'sending' ? t('form.sending') : t('form.submit')}
-            </button>
-            {status === 'error' && (
-              <p className="text-red-400 text-sm mt-1">{t('form.error')}</p>
-            )}
-            <p className="text-exyo-gray text-xs mt-2 text-left">
-              {t('form.timezone_note')}
-            </p>
-          </form>
-        )}
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+              <input type="text" style={{ display: 'none' }} name="_honey" tabIndex={-1} autoComplete="off" />
+
+              <div>
+                <label htmlFor="f-nome" className="form-label">{t('form.name')}</label>
+                <input id="f-nome" type="text" name="nome" required autoComplete="name" value={formData.nome} onChange={handleChange} className="form-input" />
+              </div>
+
+              <div>
+                <label htmlFor="f-email" className="form-label">{t('form.email')}</label>
+                <input id="f-email" type="email" name="email" required autoComplete="email" value={formData.email} onChange={handleChange} className="form-input" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-[11rem_1fr] gap-5 sm:gap-4">
+                <div>
+                  <label htmlFor="f-ddi" className="form-label">{t('form.phone_ddi_label')}</label>
+                  <select
+                    id="f-ddi"
+                    name="ddi"
+                    required
+                    value={formData.ddi}
+                    onChange={handleChange}
+                    title={t('form.phone_ddi_hint')}
+                    autoComplete="tel-country-code"
+                    className="form-input"
+                  >
+                    {sortedCountries.map(c => (
+                      <option key={c.iso} value={c.iso}>
+                        {c.flag} {c.dial} {c[lang]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="f-tel" className="form-label">{t('form.phone_label')}</label>
+                  <input
+                    id="f-tel"
+                    type="tel"
+                    name="telefone"
+                    placeholder={t('form.phone_placeholder')}
+                    required
+                    value={formData.telefone}
+                    onChange={handleChange}
+                    pattern="^[\d\s\-()]{6,}$"
+                    title={t('form.phone_hint')}
+                    autoComplete="tel-national"
+                    className="form-input"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="f-data" className="form-label">{t('form.date_label')}{optional}</label>
+                  <input id="f-data" type="date" name="data" value={formData.data} onChange={handleChange} className="form-input" />
+                </div>
+                <div>
+                  <label htmlFor="f-hora" className="form-label">{t('form.time_label')}{optional}</label>
+                  <input id="f-hora" type="time" name="horario" value={formData.horario} onChange={handleChange} className="form-input" />
+                </div>
+              </div>
+
+              <button type="submit" disabled={status === 'sending'} className="cta-btn w-full mt-2 disabled:opacity-60 disabled:cursor-progress">
+                {status === 'sending' ? t('form.sending') : t('form.submit')}
+                {status !== 'sending' && <ArrowRight weight="bold" className="cta-arrow w-4 h-4" />}
+              </button>
+
+              {status === 'error' && (
+                <p className="text-[#FF8A8A] text-sm" role="alert">{t('form.error')}</p>
+              )}
+            </form>
+          )}
+        </div>
       </div>
     </section>
   )

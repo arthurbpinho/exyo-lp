@@ -1,50 +1,50 @@
-import { useState, useEffect } from 'react'
-import logoExyo from '../assets/images/logo-exyo.png'
+import { useState, useEffect, useRef } from 'react'
+import logoWordmark from '../assets/images/simulacao/logo-wordmark.png'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useT } from '../i18n/LanguageContext'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const sentinel = useRef(null)
   const t = useT()
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    // Sentinel 48px below the top of the document: once it leaves the viewport, the bar condenses
+    const obs = new IntersectionObserver(([entry]) => setScrolled(!entry.isIntersecting))
+    if (sentinel.current) obs.observe(sentinel.current)
+    return () => obs.disconnect()
   }, [])
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
-        scrolled ? 'py-2' : 'py-3 sm:py-4'
-      }`}
-      style={{
-        background: scrolled ? 'rgba(10,10,10,0.92)' : 'rgba(10,10,10,0.6)',
-        backdropFilter: 'blur(24px)',
-        WebkitBackdropFilter: 'blur(24px)',
-        borderBottom: `1px solid ${scrolled ? 'rgba(112,206,211,0.08)' : 'rgba(255,255,255,0.03)'}`,
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2 group">
-          <img
-            src={logoExyo}
-            alt="Exyo"
-            className={`transition-all duration-500 ${scrolled ? 'h-10 sm:h-12' : 'h-12 sm:h-14'}`}
-          />
-        </a>
-
-        <div className="flex items-center gap-3 sm:gap-4">
-          <LanguageSwitcher />
-          <a
-            href="#form-section"
-            className="cta-btn hidden md:inline-flex"
-            style={{ padding: '11px 28px', fontSize: '0.85rem' }}
-          >
-            {t('nav.cta')}
+    <>
+      <div ref={sentinel} className="absolute top-12 left-0 h-px w-px" aria-hidden="true" />
+      <nav
+        className="fixed top-0 left-0 right-0 z-[100] transition-[background-color,border-color,padding] duration-500"
+        style={{
+          padding: scrolled ? '10px 0' : '18px 0',
+          background: scrolled ? 'rgba(10,10,11,0.78)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px) saturate(140%)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(140%)' : 'none',
+          borderBottom: `1px solid ${scrolled ? 'var(--line)' : 'transparent'}`,
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-10 flex items-center justify-between">
+          <a href="#hero" className="flex items-center" aria-label="EXYO">
+            <img src={logoWordmark} alt="EXYO" width="900" height="332" className="h-8 sm:h-9 w-auto" />
           </a>
+
+          <div className="flex items-center gap-3 sm:gap-4">
+            <LanguageSwitcher />
+            <a
+              href="#form-section"
+              className="cta-btn hidden md:inline-flex"
+              style={{ padding: '10px 20px', fontSize: '0.85rem' }}
+            >
+              {t('nav.cta')}
+            </a>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   )
 }
