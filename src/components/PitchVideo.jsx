@@ -1,17 +1,26 @@
 import { useState } from 'react'
 import { Play } from '@phosphor-icons/react'
 import poster from '../assets/images/simulacao/pitch-poster.jpg'
-import { useT } from '../i18n/LanguageContext'
+import { useLanguage } from '../i18n/LanguageContext'
 
 const VIMEO_ID = '1236225522'
-const VIMEO_SRC = `https://player.vimeo.com/video/${VIMEO_ID}?autoplay=1&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1&color=70CED3`
+const YOUTUBE_ID_PT = 'HmyVsokWirk'
 
-// Poster facade: the Vimeo player only loads after the visitor presses play,
+// English plays the Vimeo cut; Portuguese plays the YouTube version
+const VIDEO_SRC = {
+  en: `https://player.vimeo.com/video/${VIMEO_ID}?autoplay=1&title=0&byline=0&portrait=0&badge=0&autopause=0&dnt=1&color=70CED3`,
+  pt: `https://www.youtube-nocookie.com/embed/${YOUTUBE_ID_PT}?autoplay=1&rel=0&modestbranding=1&playsinline=1`,
+}
+
+// Poster facade: the player only loads after the visitor presses play,
 // so the page stays light and the frame keeps the site's look until then.
 export default function PitchVideo() {
-  const t = useT()
-  const [playing, setPlaying] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+  const { lang, t } = useLanguage()
+  // Tracking the language that was playing resets to the poster when the language changes
+  const [playingLang, setPlayingLang] = useState(null)
+  const [loadedLang, setLoadedLang] = useState(null)
+  const playing = playingLang === lang
+  const loaded = loadedLang === lang
 
   return (
     <div id="video" className="relative">
@@ -21,12 +30,13 @@ export default function PitchVideo() {
         <div className="video-frame">
           {playing && (
             <iframe
-              src={VIMEO_SRC}
+              key={lang}
+              src={VIDEO_SRC[lang] ?? VIDEO_SRC.en}
               title={t('video.iframe_title')}
               allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
-              onLoad={() => setLoaded(true)}
+              onLoad={() => setLoadedLang(lang)}
               className="absolute inset-0 w-full h-full"
             />
           )}
@@ -34,7 +44,7 @@ export default function PitchVideo() {
           {!loaded && (
             <button
               type="button"
-              onClick={() => setPlaying(true)}
+              onClick={() => setPlayingLang(lang)}
               disabled={playing}
               aria-label={`${t('video.play')}: ${t('video.title')} (${t('video.duration')})`}
               className="video-trigger group absolute inset-0 w-full h-full text-left cursor-pointer disabled:cursor-progress"
